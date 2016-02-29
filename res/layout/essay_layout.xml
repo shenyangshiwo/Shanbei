@@ -4,57 +4,23 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <RelativeLayout
-        android:id="@+id/RelativeLayout1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#18a878"
-         >
-
-        <TextView
-            android:id="@+id/textview_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:paddingBottom="10dp"
-            android:paddingLeft="20dp"
-            android:paddingTop="10dp"
-            android:text="lesson"
-            android:textColor="#ffffff"
-            android:textSize="26dp" />
-
-        <TextView
-            android:id="@+id/textview_showNewWords"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@id/textview_title"
-            android:layout_alignParentRight="true"
-            android:paddingBottom="10dp"
-            android:paddingRight="20dp"
-            android:paddingTop="10dp"
-            android:text="显示生词"
-            android:textColor="#ffffff"
-            android:textSize="15dp" />
-
-    </RelativeLayout>
-
     <ScrollView
         android:id="@+id/scrollView1"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="10" >
+        android:layout_weight="10"
+         >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical" >
-
             <TextView
                 android:id="@+id/textview_essay"
+                android:textSize="20dp"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:textSize="20dp" />
+                android:layout_height="match_parent" />
+            
         </LinearLayout>
     </ScrollView>
 
@@ -63,13 +29,18 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="vertical" >
-
         <SeekBar
             android:id="@+id/seekBar1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:max="7" />
+            android:max="7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        
+            
+
+        
+
     </LinearLayout>
 
 </LinearLayout>

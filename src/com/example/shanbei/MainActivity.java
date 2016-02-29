@@ -15,7 +15,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -29,7 +28,10 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        init();
+        setContentView(R.layout.activity_main);
+        listView_catalog=(ListView)findViewById(R.id.listView_catalog);
+        SimpleAdapter adapter=new SimpleAdapter(this, getData(), R.layout.catalog_listview, new String[]{"name","title"}, new int[]{R.id.name,R.id.title});
+        listView_catalog.setAdapter(adapter);
         listView_catalog.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -96,13 +98,5 @@ public class MainActivity extends Activity {
     	}
     	return list;
     	
-    }
-    private void init()
-    {
-    	requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_main);
-        listView_catalog=(ListView)findViewById(R.id.listView_catalog);
-        SimpleAdapter adapter=new SimpleAdapter(this, getData(), R.layout.catalog_listview, new String[]{"name","title"}, new int[]{R.id.name,R.id.title});
-        listView_catalog.setAdapter(adapter);
     }
 }

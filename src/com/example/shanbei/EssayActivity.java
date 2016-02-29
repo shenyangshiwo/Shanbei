@@ -12,9 +12,6 @@ import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.BackgroundColorSpan;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.Window;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
@@ -24,8 +21,6 @@ public class EssayActivity extends Activity {
 	public List<String> list_word=null;
 	public int id=-1;
 	public TextView textView_essay;
-	public TextView textView_title;
-	public TextView textView_showNewWord;
 	public SeekBar seekBar;
 	public MyApplication app;
 	public String text;
@@ -33,48 +28,15 @@ public class EssayActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.essay_layout);
 		init();
-		textView_showNewWord.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				if(textView_showNewWord.getText().toString().equals("显示生词"))
-				{
-					seekBar.setProgress(seekBar.getMax());
-					textView_showNewWord.setText("关闭显示");
-					int level=seekBar.getProgress()-1;
-					refreshTextView(level);
-					if(level<0)
-					{
-						Toast.makeText(EssayActivity.this,"不显示生词",Toast.LENGTH_SHORT).show();
-					}
-					else {
-						Toast.makeText(EssayActivity.this, (level)+"级及以下生词",Toast.LENGTH_SHORT).show();
-					}
-				}
-				else {
-					seekBar.setProgress(0);
-					textView_showNewWord.setText("显示生词");
-					int level=seekBar.getProgress()-1;
-					refreshTextView(level);
-					if(level<0)
-					{
-						Toast.makeText(EssayActivity.this,"不显示生词",Toast.LENGTH_SHORT).show();
-					}
-					else {
-						Toast.makeText(EssayActivity.this, (level)+"级及以下生词",Toast.LENGTH_SHORT).show();
-					}
-				}
-				
-			}
-		});
 		seekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 			
 			@Override
 			public void onStopTrackingTouch(SeekBar seekBar) {
 				// TODO Auto-generated method stub
-				int level=seekBar.getProgress()-1;
+				int progress=seekBar.getProgress();
+				int level=progress-1;
 				refreshTextView(level);
 				if(level<0)
 				{
@@ -127,17 +89,13 @@ public class EssayActivity extends Activity {
 	}
 	public void init()
 	{
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.essay_layout);
 		//获取控件
-		textView_title=(TextView)findViewById(R.id.textview_title);
-		textView_showNewWord=(TextView)findViewById(R.id.textview_showNewWords);
 		textView_essay=(TextView)findViewById(R.id.textview_essay);
 		seekBar=(SeekBar)findViewById(R.id.seekBar1);
 		//得到文章id
 		id=getIntent().getIntExtra("id", -1)+1;
 		//设置标题
-		textView_title.setText("Lesson "+id);
+		setTitle("Lesson "+id);
 		//获取application
 		MyApplication app=(MyApplication)getApplication();
 		try {
