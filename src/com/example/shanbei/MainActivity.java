@@ -53,7 +53,7 @@ public class MainActivity extends Activity {
 				case SCROLL_STATE_IDLE:
 					if(view.getLastVisiblePosition()==view.getCount()-1)
 					{
-						Toast.makeText(MainActivity.this, "已经到底了！", 800).show();
+						Toast.makeText(MainActivity.this, "已经到底了！", Toast.LENGTH_SHORT).show();
 					}
 					break;
 				default:

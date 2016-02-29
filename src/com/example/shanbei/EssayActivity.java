@@ -35,7 +35,16 @@ public class EssayActivity extends Activity {
 			@Override
 			public void onStopTrackingTouch(SeekBar seekBar) {
 				// TODO Auto-generated method stub
-				
+				int progress=seekBar.getProgress();
+				int level=progress-1;
+				refreshTextView(level);
+				if(level<0)
+				{
+					Toast.makeText(EssayActivity.this,"不显示生词",Toast.LENGTH_SHORT).show();
+				}
+				else {
+					Toast.makeText(EssayActivity.this, (level)+"级及以下生词",Toast.LENGTH_SHORT).show();
+				}
 			}
 			
 			@Override
@@ -48,15 +57,7 @@ public class EssayActivity extends Activity {
 			public void onProgressChanged(SeekBar seekBar, int progress,
 					boolean fromUser) {
 				// TODO Auto-generated method stub
-				int level=progress-1;
-				refreshTextView(level);
-				if(level<0)
-				{
-					Toast.makeText(EssayActivity.this,"不显示生词", 500).show();
-				}
-				else {
-					Toast.makeText(EssayActivity.this, (level)+"级及以下生词", 500).show();
-				}
+				
 				
 			}
 		});
