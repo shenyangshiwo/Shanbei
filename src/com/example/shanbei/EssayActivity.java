@@ -19,11 +19,19 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
+/**
 
+* 文章文本显示Activity
+
+* @author Shenyang
+
+* @Time 2016-02-27
+
+*/
 public class EssayActivity extends Activity {
 	public List<String> list_word=null;
 	public int id=-1;
-	public TextView textView_essay;
+	public MyTextView textView_essay;
 	public TextView textView_title;
 	public TextView textView_showNewWord;
 	public SeekBar seekBar;
@@ -34,6 +42,7 @@ public class EssayActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		init();
+		
 		textView_showNewWord.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -43,28 +52,25 @@ public class EssayActivity extends Activity {
 				{
 					seekBar.setProgress(seekBar.getMax());
 					textView_showNewWord.setText("关闭显示");
-					int level=seekBar.getProgress()-1;
-					refreshTextView(level);
-					if(level<0)
-					{
-						Toast.makeText(EssayActivity.this,"不显示生词",Toast.LENGTH_SHORT).show();
-					}
-					else {
-						Toast.makeText(EssayActivity.this, (level)+"级及以下生词",Toast.LENGTH_SHORT).show();
-					}
+					textView_essay.level=6;
+					textView_essay.setEnabled(false);
+					textView_essay.setEnabled(true);
+					
+					
+					Toast.makeText(EssayActivity.this,"显示所有生词",Toast.LENGTH_SHORT).show();
+					
 				}
-				else {
+				else 
+				{
 					seekBar.setProgress(0);
 					textView_showNewWord.setText("显示生词");
-					int level=seekBar.getProgress()-1;
-					refreshTextView(level);
-					if(level<0)
-					{
-						Toast.makeText(EssayActivity.this,"不显示生词",Toast.LENGTH_SHORT).show();
-					}
-					else {
-						Toast.makeText(EssayActivity.this, (level)+"级及以下生词",Toast.LENGTH_SHORT).show();
-					}
+					textView_essay.level=-1;
+					textView_essay.setEnabled(false);
+					textView_essay.setEnabled(true);
+					Toast.makeText(EssayActivity.this,"不显示生词",Toast.LENGTH_SHORT).show();
+					
+					
+					
 				}
 				
 			}
@@ -75,7 +81,9 @@ public class EssayActivity extends Activity {
 			public void onStopTrackingTouch(SeekBar seekBar) {
 				// TODO Auto-generated method stub
 				int level=seekBar.getProgress()-1;
-				refreshTextView(level);
+				textView_essay.level=level;
+				textView_essay.setEnabled(false);
+				textView_essay.setEnabled(true);
 				if(level<0)
 				{
 					Toast.makeText(EssayActivity.this,"不显示生词",Toast.LENGTH_SHORT).show();
@@ -104,6 +112,19 @@ public class EssayActivity extends Activity {
 		
 		
 	}
+	/**
+
+	* txt文本转化为string
+
+	* @return 返回文章文本的string对象
+
+	* @author Shenyang
+	
+	* @throws IOException 
+
+	* @Time 2016-02-27
+
+	*/
 	public String formatString() throws IOException
 	{
 		String s1="";
@@ -115,16 +136,25 @@ public class EssayActivity extends Activity {
 		{
 			if(s1.length()==0)
 			{
-				s1=s2+"\n";
+				s1=s2;
 			}
 			else {
-				s1=s1+"\n    "+s2;
+				s1=s1+"\n\n"+s2;
 			}
 			
 		}
 		bufReader.close();
 		return s1;
 	}
+	/**
+
+	* activity初始化
+
+	* @author Shenyang
+
+	* @Time 2016-02-27
+
+	*/
 	public void init()
 	{
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -132,7 +162,7 @@ public class EssayActivity extends Activity {
 		//获取控件
 		textView_title=(TextView)findViewById(R.id.textview_title);
 		textView_showNewWord=(TextView)findViewById(R.id.textview_showNewWords);
-		textView_essay=(TextView)findViewById(R.id.textview_essay);
+		textView_essay=(MyTextView)findViewById(R.id.textview_essay);
 		seekBar=(SeekBar)findViewById(R.id.seekBar1);
 		//得到文章id
 		id=getIntent().getIntExtra("id", -1)+1;
@@ -148,33 +178,19 @@ public class EssayActivity extends Activity {
 		}
 		try {
 			text=formatString();
-			textView_essay.setText(text);
+			textView_essay.level=-1;
+			textView_essay.textContent=text;
+			textView_essay.list_word=list_word;
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	public void refreshTextView(int i)
-	{
-		if((list_word.size()>0)&&(list_word!=null))
-		{
-			SpannableStringBuilder textStyle=new SpannableStringBuilder(text);
-			for(int n=0;n<(list_word.size())/2;n++)
-			{
-				int j=n*2;
-				String s=list_word.get(j+1);
-				int k=Integer.parseInt(s);
-				if(k<=i)
-				{
-					s=list_word.get(j);
-					textStyle.setSpan(new BackgroundColorSpan(Color.rgb(0x66, 0xcc, 0x99)), text.indexOf(s), text.indexOf(s)+s.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-				}
-				
-			}
-			textView_essay.setText(textStyle);
-		}
-		
-		
-	}
+	
+
+
+
+	
 
 }

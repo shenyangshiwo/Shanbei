@@ -23,7 +23,15 @@ import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
+/**
 
+* 文章列表Activity
+
+* @author Shenyang
+
+* @Time 2016-02-27
+
+*/
 public class MainActivity extends Activity {
 	ListView listView_catalog;
     @Override
@@ -70,6 +78,17 @@ public class MainActivity extends Activity {
 		});
         
     }
+	/**
+
+	* 获取listview适配器中的数据
+
+	* @return 返回文章名和文章号码的List集合
+
+	* @author Shenyang
+
+	* @Time 2016-02-27
+
+	*/
     private List<Map<String, Object>> getData()
     {
     	List<Map<String, Object>> list=new ArrayList<Map<String,Object>>();
@@ -97,6 +116,15 @@ public class MainActivity extends Activity {
     	return list;
     	
     }
+    /**
+
+	* activity初始化
+
+	* @author Shenyang
+
+	* @Time 2016-02-27
+
+	*/
     private void init()
     {
     	requestWindowFeature(Window.FEATURE_NO_TITLE);

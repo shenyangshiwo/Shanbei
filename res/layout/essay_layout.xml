@@ -50,11 +50,12 @@
             android:layout_height="match_parent"
             android:orientation="vertical" >
 
-            <TextView
+            <com.example.shanbei.MyTextView
+                
                 android:id="@+id/textview_essay"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:textSize="20dp" />
+                android:layout_height="wrap_content"
+                 />
         </LinearLayout>
     </ScrollView>
 

@@ -26,17 +26,17 @@ public class MyApplication extends Application {
 
 	* 文章文本预处理
 
-	* @param essayName assets文件夹中保存的文章名称
+	* @param essayName:assets文件夹中保存的文章名称
 
 	* @return 返回文章每个单词与等级的List集合，如果该单词不在生词列表中，等级为-1
 
 	* @author Shenyang
-	 * @throws IOException 
+	
+	* @throws IOException 
 
 	* @Time 2016-02-27
 
-
-	   */
+	*/
 	public List<String> essayMap(String essayName) throws IOException
 	{
 		List<String> list=new ArrayList<String>();

@@ -3,7 +3,19 @@ package com.example.shanbei;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.Toast;
+/**
 
+* 开始动画显示Activity
+
+* @author Shenyang
+
+* @Time 2016-02-27
+
+*/
 public class SplashActivity extends Activity {
     public long logTime;//登录时间
 	@Override
@@ -13,6 +25,7 @@ public class SplashActivity extends Activity {
         setContentView(R.layout.splash_layout);
         logTime=System.currentTimeMillis();//获取登录时间
         new SplashThread().start();
+       
 	}
 	public class SplashThread extends Thread
 	{

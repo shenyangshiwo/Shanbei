@@ -9,6 +9,25 @@ package com.example.shanbei;
 
 public final class R {
     public static final class attr {
+        /** <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int textColor=0x7f010000;
+        /** <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int textSize=0x7f010001;
     }
     public static final class drawable {
         public static final int ic_launcher=0x7f020000;
@@ -16,10 +35,12 @@ public final class R {
     public static final class id {
         public static final int LinearLayout1=0x7f060000;
         public static final int RelativeLayout1=0x7f060004;
+        public static final int button1=0x7f06000a;
         public static final int listView_catalog=0x7f060001;
         public static final int name=0x7f060002;
         public static final int scrollView1=0x7f060007;
         public static final int seekBar1=0x7f060009;
+        public static final int text1=0x7f06000b;
         public static final int textview_essay=0x7f060008;
         public static final int textview_showNewWords=0x7f060006;
         public static final int textview_title=0x7f060005;
@@ -29,7 +50,8 @@ public final class R {
         public static final int activity_main=0x7f030000;
         public static final int catalog_listview=0x7f030001;
         public static final int essay_layout=0x7f030002;
-        public static final int splash_layout=0x7f030003;
+        public static final int mytextview=0x7f030003;
+        public static final int splash_layout=0x7f030004;
     }
     public static final class string {
         public static final int app_name=0x7f040000;
@@ -62,4 +84,52 @@ public final class R {
          */
         public static final int AppTheme=0x7f050001;
     }
+    public static final class styleable {
+        /** Attributes that can be used with a MyTextView.
+           <p>Includes the following attributes:</p>
+           <table>
+           <colgroup align="left" />
+           <colgroup align="left" />
+           <tr><th>Attribute</th><th>Description</th></tr>
+           <tr><td><code>{@link #MyTextView_textColor com.example.shanbei:textColor}</code></td><td></td></tr>
+           <tr><td><code>{@link #MyTextView_textSize com.example.shanbei:textSize}</code></td><td></td></tr>
+           </table>
+           @see #MyTextView_textColor
+           @see #MyTextView_textSize
+         */
+        public static final int[] MyTextView = {
+            0x7f010000, 0x7f010001
+        };
+        /**
+          <p>This symbol is the offset where the {@link com.example.shanbei.R.attr#textColor}
+          attribute's value can be found in the {@link #MyTextView} array.
+
+
+          <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.example.shanbei:textColor
+        */
+        public static final int MyTextView_textColor = 0;
+        /**
+          <p>This symbol is the offset where the {@link com.example.shanbei.R.attr#textSize}
+          attribute's value can be found in the {@link #MyTextView} array.
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.example.shanbei:textSize
+        */
+        public static final int MyTextView_textSize = 1;
+    };
 }
