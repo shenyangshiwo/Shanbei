@@ -7,38 +7,42 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
-/**
-
-* 开始动画显示Activity
-
-* @author Shenyang
-
-* @Time 2016-02-27
-
+/*
+* 类    名：SplashAcitvity
+* 描    述：开场动画Activity
+* 作    者：沈阳
+* 时    间：2016-2-27
 */
 public class SplashActivity extends Activity {
-    public long logTime;//登录时间
+    private long mLogTime;//登录时间
+    private long mWaitTime=1000;//等待时间
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_layout);
-        logTime=System.currentTimeMillis();//获取登录时间
-        new SplashThread().start();
+        mLogTime=System.currentTimeMillis();//获取登录时间
+        new LoadThread().start();
        
 	}
-	public class SplashThread extends Thread
+	/*
+	* 类    名：LoadThread
+	* 描    述：数据加载线程，数据加载最长时间为mWaitTime，加载完成进入新的Acitivity
+	* 作    者：沈阳
+	* 时    间：2016-2-27
+	*/
+	public class LoadThread extends Thread
 	{
 
 		@Override
 		public void run() {
 			// TODO Auto-generated method stub
 			super.run();
-			while((System.currentTimeMillis()-logTime)<1000)
+			while((System.currentTimeMillis()-mLogTime)<mWaitTime)
 			{
-				//可以在这里进行预加载工作
+				//
 			}
-			startActivity(new Intent(getApplication(),MainActivity.class));
+			startActivity(new Intent(getApplication(),EssayListActivity.class));
 			SplashActivity.this.finish();
 			
 		}

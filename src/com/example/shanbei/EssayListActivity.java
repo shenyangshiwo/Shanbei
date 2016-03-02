@@ -23,33 +23,32 @@ import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
-/**
-
-* 文章列表Activity
-
-* @author Shenyang
-
-* @Time 2016-02-27
-
+/*
+* 类    名：EssayListActivity
+* 描    述：文章列表显示Activity
+* 作    者：沈阳
+* 时    间：2016-2-27
 */
-public class MainActivity extends Activity {
-	ListView listView_catalog;
+public class EssayListActivity extends Activity {
+	private ListView mListView;//显示全部文章名称的ListView
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         init();
-        listView_catalog.setOnItemClickListener(new OnItemClickListener() {
+        //mListView添加点击事件，点击相应的文章标题,打开对应的文章内容。
+        mListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				// TODO Auto-generated method stub
-				Intent intent=new Intent(MainActivity.this, EssayActivity.class);
+				Intent intent=new Intent(EssayListActivity.this, EssayContentActivity.class);
 				intent.putExtra("id", position);
 				startActivity(intent);
 			}
 		});
-        listView_catalog.setOnScrollListener(new OnScrollListener() {
+        //mListView添加活动监听器，当滑动到底部时通过Toast提示用户。
+        mListView.setOnScrollListener(new OnScrollListener() {
 			
 			@Override
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -59,7 +58,7 @@ public class MainActivity extends Activity {
 				case SCROLL_STATE_IDLE:
 					if(view.getLastVisiblePosition()==view.getCount()-1)
 					{
-						Toast.makeText(MainActivity.this, "已经到底了！", Toast.LENGTH_SHORT).show();
+						Toast.makeText(EssayListActivity.this, "已经到底了！", Toast.LENGTH_SHORT).show();
 					}
 					break;
 				default:
@@ -78,17 +77,14 @@ public class MainActivity extends Activity {
 		});
         
     }
-	/**
-
-	* 获取listview适配器中的数据
-
-	* @return 返回文章名和文章号码的List集合
-
-	* @author Shenyang
-
-	* @Time 2016-02-27
-
-	*/
+    /*
+    * 方 法 名：getData()
+    * 功      能：获取mListView中要显示的数据
+    * 参      数：无
+    * 返 回 值：List<Map<String, Object>>——mListView中要显示的数据
+    * 作      者：沈阳
+    * 时      间：2016-2-27
+    */
     private List<Map<String, Object>> getData()
     {
     	List<Map<String, Object>> list=new ArrayList<Map<String,Object>>();
@@ -116,21 +112,20 @@ public class MainActivity extends Activity {
     	return list;
     	
     }
-    /**
-
-	* activity初始化
-
-	* @author Shenyang
-
-	* @Time 2016-02-27
-
-	*/
+    /*
+     * 方 法 名：init()
+     * 功      能：对当前Activity进行初始化，主要是设置mListView中要显示的内容
+     * 参      数：无
+     * 返 回 值：无
+     * 作      者：沈阳
+     * 时      间：2016-2-27
+     */
     private void init()
     {
     	requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
-        listView_catalog=(ListView)findViewById(R.id.listView_catalog);
+        mListView=(ListView)findViewById(R.id.listView_catalog);
         SimpleAdapter adapter=new SimpleAdapter(this, getData(), R.layout.catalog_listview, new String[]{"name","title"}, new int[]{R.id.name,R.id.title});
-        listView_catalog.setAdapter(adapter);
+        mListView.setAdapter(adapter);
     }
 }

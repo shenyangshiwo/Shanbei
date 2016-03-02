@@ -13,80 +13,93 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View.MeasureSpec;
 import android.widget.TextView;
-/**
-
-* 文章文本显示自定义TextView
-
-* @author Shenyang
-
-* @Time 2016-02-27
-
+/*
+* 类    名：MyTextView
+* 描    述：按自定义文本显示TextView,实现了两端对齐及按照指定等级高亮显示生词
+* 作    者：沈阳
+* 时    间：2016-2-28
 */
 public class MyTextView extends TextView {
-	public List<String> list_word=null;
-	private float textSize;
-	private int textColor;
-	private Paint mPaint;  
-	public String textContent="shen yang nanjing university";
-	private float textViewWidth;
-	private float wordSeparationDistance=20;
-	private float lineSpacing=10;
-	private int lineCount=0;
-	private float padding=20;
-	String[] textWords=null;
-	public int level=-1;
+	public List<String> mWordList=null;//当前文章中包含的生词及等级
+	public float mTextSize;//字体大小
+	public int mTextColor;//字体颜色
+	public Paint mPaint;//画笔
+	public String mTextContent="shen yang nanjing university";//显示内容
+	public float mTextViewWidth;//控件宽度
+	public float mWordDistance=20;//单词显示最小间隔
+	public float mLineSpace=10;//单词显示行距
+	public int mLineCount=0;//显示行数
+	public float mPadding=20;//显示边距
+	String[] mTextWords=null;//文章内容英文单词数组
+	public int mLevel=-1;//要显示的生词级别，-1代表不显示生词
+	/*
+	 * 方 法 名：MyTextView(Context context, AttributeSet attrs) 
+	 * 功      能：重写父类构造函数，设置画刷的大小和颜色
+	 * 参      数：(Context context, AttributeSet attrs)
+	 * 返 回 值：无
+	 * 作      者：沈阳
+	 * 时      间：2016-2-29
+	 */
 	public MyTextView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		// TODO Auto-generated constructor stub
 		
-		textWords=textContent.split(" ");
+		
 		//TypedArray a=context.obtainStyledAttributes(attrs,R.styleable.MyTextView);
-		textColor=Color.rgb(0x00, 0x00, 0x00);  
-		textSize=40;
+		mTextColor=Color.rgb(0x00, 0x00, 0x00);  
+		mTextSize=40;
 		mPaint = new Paint();
-		mPaint.setTextSize(textSize);  
-        mPaint.setColor(textColor);
+		mPaint.setTextSize(mTextSize);  
+        mPaint.setColor(mTextColor);
         //a.recycle(); 
 	}
+	/* @覆盖父类onMeasure(int widthMeasureSpec, int heightMeasureSpec)方法
+	 * 方 法 名：onMeasure(int widthMeasureSpec, int heightMeasureSpec)
+	 * 功      能：覆盖父类onMeasure方法，自定义控件的大小
+	 * 参      数：(Context context, AttributeSet attrs)
+	 * 返 回 值：无
+	 * 作      者：沈阳
+	 * 时      间：2016-2-29
+	 */
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 		// TODO Auto-generated method stub
 		//super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 		
-		textViewWidth=MeasureSpec.getSize(widthMeasureSpec)-padding*2;
-		
+		mTextViewWidth=MeasureSpec.getSize(widthMeasureSpec)-mPadding*2;
+		mTextWords=mTextContent.split(" ");
 		int start=0;
 		int end=start;
-		lineCount=0;
+		mLineCount=0;
 		
-		while(start<textWords.length)
+		while(start<mTextWords.length)
 		{
-			float drawedWidth=padding;
-			for(end=start;end<textWords.length;end++)
+			float drawedWidth=mPadding;
+			for(end=start;end<mTextWords.length;end++)
 			{
 				if(end==start)
 				{
 					
 					
-					drawedWidth=drawedWidth+mPaint.measureText(textWords[start]);
+					drawedWidth=drawedWidth+mPaint.measureText(mTextWords[start]);
 				}
 				else
 				{
-					float willDrawWidth=drawedWidth+wordSeparationDistance+mPaint.measureText(textWords[end]);
-					if(willDrawWidth<=textViewWidth)
+					float willDrawWidth=drawedWidth+mWordDistance+mPaint.measureText(mTextWords[end]);
+					if(willDrawWidth<=mTextViewWidth)
 					{
 						
 						drawedWidth=willDrawWidth;
-						if(end==textWords.length-1)
+						if(end==mTextWords.length-1)
 						{
-							lineCount++;
+							mLineCount++;
 							break;
 						}
 					}
 					else
 					{
 
-						lineCount++;
+						mLineCount++;
 						break;
 					}
 				}
@@ -94,52 +107,68 @@ public class MyTextView extends TextView {
 			start=end;
 			
 		}
-		setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec), (int) ((lineCount+1)*(textSize+lineSpacing))+50);
+		setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec), (int) ((mLineCount+1)*(mTextSize+mLineSpace))+50);
 	    
 	}
+	/* @覆盖父类onDraw(Canvas canvas)方法
+	 * 方 法 名：onDraw(Canvas canvas)
+	 * 功      能：覆盖父类onDraw(Canvas canvas)方法，自定义控件中显示的内容
+	 * 参      数：Canvas canvas——画布
+	 * 返 回 值：无
+	 * 作      者：沈阳
+	 * 时      间：2016-2-29
+	 */
 	@Override
 	protected void onDraw(Canvas canvas) {
 		// TODO Auto-generated method stub
 		//super.onDraw(canvas);
-		textWords=textContent.split(" ");
-		reDraw(canvas, level);
+		//mTextWords=mTextContent.split(" ");
+		reDraw(canvas, mLevel);
 	
 	}
+	/* 
+	 * 方 法 名：reDraw(Canvas canvas, int i)
+	 * 功      能：自定义控件中显示的内容
+	 * 参      数：Canvas canvas——画布，int i——要显示的生词等级
+	 * 返 回 值：无
+	 * 作      者：沈阳
+	 * 时      间：2016-2-29
+	 */
 	public void reDraw(Canvas canvas, int i)
 	{
 		int start=0;
 		int end=start;
-		lineCount=0;
+		mLineCount=0;
 		mPaint = new Paint();
-		mPaint.setTextSize(textSize);  
-        mPaint.setColor(textColor);
-		while(start<(textWords.length))
+		mPaint.setTextSize(mTextSize);  
+        mPaint.setColor(mTextColor);
+		while(start<(mTextWords.length))
 		{
-			float drawedWidth=padding;
-			if(start==(textWords.length-1))
+			float drawedWidth=mPadding;
+			if(start==(mTextWords.length-1))
 			{
 				
 				break;
 			}
-			for(end=start;end<textWords.length;end++)
+			for(end=start;end<mTextWords.length;end++)
 			{
 				if(end==start)
 				{
 					
 					
-					drawedWidth=drawedWidth+mPaint.measureText(textWords[start]);
+					drawedWidth=drawedWidth+mPaint.measureText(mTextWords[start]);
 					
 				}
 				else
 				{
-					float willDrawWidth=drawedWidth+wordSeparationDistance+mPaint.measureText(textWords[end]);
-					if(willDrawWidth<=textViewWidth)
+					float willDrawWidth=drawedWidth+mWordDistance+mPaint.measureText(mTextWords[end]);
+					if(willDrawWidth<=mTextViewWidth)
 					{
 						
 						drawedWidth=willDrawWidth;
-						if(end==(textWords.length-1))
+						if(end==(mTextWords.length-1))
 						{
-							drawedWidth=padding;
+							drawedWidth=mPadding;
 							for(int k=start;k<=end;k++)
 							{
 								if(k==start)
@@ -147,15 +176,15 @@ public class MyTextView extends TextView {
 									if(choosePaint(k))
 									{
 										float startX=drawedWidth;
-										float startY=(lineCount+1)*(textSize+lineSpacing);
-										float stopX=startX+mPaint.measureText(textWords[start]);
+										float startY=(mLineCount+1)*(mTextSize+mLineSpace);
+										float stopX=startX+mPaint.measureText(mTextWords[start]);
 										float stopY=startY;
 										
 										canvas.drawLine(startX, startY, stopX, stopY, mPaint);
 									}
 							
-									canvas.drawText(textWords[k], drawedWidth, (lineCount+1)*(textSize+lineSpacing), mPaint);
-									drawedWidth=drawedWidth+wordSeparationDistance+mPaint.measureText(textWords[start]);	
+									canvas.drawText(mTextWords[k], drawedWidth, (mLineCount+1)*(mTextSize+mLineSpace), mPaint);
+									drawedWidth=drawedWidth+mWordDistance+mPaint.measureText(mTextWords[start]);	
 									
 								}
 								else
@@ -163,25 +192,25 @@ public class MyTextView extends TextView {
 									if(choosePaint(k))
 									{
 										float startX=drawedWidth;
-										float startY=(lineCount+1)*(textSize+lineSpacing);
-										float stopX=startX+mPaint.measureText(textWords[start]);
+										float startY=(mLineCount+1)*(mTextSize+mLineSpace);
+										float stopX=startX+mPaint.measureText(mTextWords[start]);
 										float stopY=startY;
 										
 										canvas.drawLine(startX, startY, stopX, stopY, mPaint);
 									}
-									canvas.drawText(textWords[k], drawedWidth, (lineCount+1)*(textSize+lineSpacing), mPaint);
-									drawedWidth=drawedWidth+wordSeparationDistance+mPaint.measureText(textWords[k]);
+									canvas.drawText(mTextWords[k], drawedWidth, (mLineCount+1)*(mTextSize+mLineSpace), mPaint);
+									drawedWidth=drawedWidth+mWordDistance+mPaint.measureText(mTextWords[k]);
 								}
 							}
-							lineCount++;
+							mLineCount++;
 							break;
 						}
 					}
 					else
 					{
-						float additionaWidth=textViewWidth-drawedWidth;
-						float avrAdditonWidth=additionaWidth/(end-start-1)+wordSeparationDistance;
-						drawedWidth=padding;
+						float additionaWidth=mTextViewWidth-drawedWidth;
+						float avrAdditonWidth=additionaWidth/(end-start-1)+mWordDistance;
+						drawedWidth=mPadding;
 						for(int k=start;k<end;k++)
 						{
 							if(k==start)
@@ -189,31 +218,31 @@ public class MyTextView extends TextView {
 								if(choosePaint(k))
 								{
 									float startX=drawedWidth;
-									float startY=(lineCount+1)*(textSize+lineSpacing);
-									float stopX=startX+mPaint.measureText(textWords[k]);
+									float startY=(mLineCount+1)*(mTextSize+mLineSpace);
+									float stopX=startX+mPaint.measureText(mTextWords[k]);
 									float stopY=startY;
 									
 									canvas.drawLine(startX, startY, stopX, stopY, mPaint);
 								}
-								canvas.drawText(textWords[k], drawedWidth, (lineCount+1)*(textSize+lineSpacing), mPaint);
-								drawedWidth=drawedWidth+avrAdditonWidth+mPaint.measureText(textWords[start]);
+								canvas.drawText(mTextWords[k], drawedWidth, (mLineCount+1)*(mTextSize+mLineSpace), mPaint);
+								drawedWidth=drawedWidth+avrAdditonWidth+mPaint.measureText(mTextWords[start]);
 							}
 							else
 							{
 								if(choosePaint(k))
 								{
 									float startX=drawedWidth;
-									float startY=(lineCount+1)*(textSize+lineSpacing);
-									float stopX=startX+mPaint.measureText(textWords[k]);
+									float startY=(mLineCount+1)*(mTextSize+mLineSpace);
+									float stopX=startX+mPaint.measureText(mTextWords[k]);
 									float stopY=startY;
 									
 									canvas.drawLine(startX, startY, stopX, stopY, mPaint);
 								}
-								canvas.drawText(textWords[k], drawedWidth, (lineCount+1)*(textSize+lineSpacing), mPaint);
-								drawedWidth=drawedWidth+avrAdditonWidth+mPaint.measureText(textWords[k]);
+								canvas.drawText(mTextWords[k], drawedWidth, (mLineCount+1)*(mTextSize+mLineSpace), mPaint);
+								drawedWidth=drawedWidth+avrAdditonWidth+mPaint.measureText(mTextWords[k]);
 							}
 						}
-						lineCount++;
+						mLineCount++;
 						break;
 					}
 				}
@@ -224,47 +253,55 @@ public class MyTextView extends TextView {
 		}
 		
 	}
+	/* 
+	 * 方 法 名：choosePaint(int k)
+	 * 功      能：判断mTextWords[k]是否属于生词，是的话画笔设置红色返回true，不是的话画笔设置黑色返回false
+	 * 参      数：int k——代表mTextWords数组第k个字符串
+	 * 返 回 值：boolean——mTextWords[k]是否属于生词
+	 * 作      者：沈阳
+	 * 时      间：2016-2-29
+	 */
 	public boolean choosePaint(int k)
 	{
 		int i=0;
-		boolean flag=false;
-		for(;i<list_word.size();i=i+2)
+		boolean IsNewWord=false;
+		for(;i<mWordList.size();i=i+2)
 		{
-			if(textWords[k].contains(list_word.get(i)))
+			if(mTextWords[k].contains(mWordList.get(i)))
 			{
-				if(Integer.parseInt(list_word.get(i+1))<=level)
+				if(Integer.parseInt(mWordList.get(i+1))<=mLevel)
 				{
-					flag=true;
+					IsNewWord=true;
 			        break;
 					
 				}
 				else
 				{
 					
-			        flag=false;
+			        IsNewWord=false;
 			        break;
 				}
 				
 			}
 			
 		}
-		if(flag==true)
+		if(IsNewWord==true)
 		{
 			mPaint=new Paint();
-			textColor=Color.RED;
-			textSize=40;
-			mPaint.setTextSize(textSize);  
-	        mPaint.setColor(textColor);
+			mTextColor=Color.RED;
+			mTextSize=40;
+			mPaint.setTextSize(mTextSize);  
+	        mPaint.setColor(mTextColor);
 	        
 		}
 		else {
-			textColor=Color.rgb(0x00, 0x00, 0x00);  
-			textSize=40;
+			mTextColor=Color.BLACK;  
+			mTextSize=40;
 			mPaint = new Paint();
-			mPaint.setTextSize(textSize);  
-	        mPaint.setColor(textColor);
+			mPaint.setTextSize(mTextSize);  
+	        mPaint.setColor(mTextColor);
 		}
-		return flag;
+		return IsNewWord;
 		
 		
 	}

@@ -12,32 +12,23 @@ import android.R.integer;
 import android.R.string;
 import android.app.Application;
 import android.util.Log;
-/**
-
-* MyApplication包含一些公用方法和公用变量
-
-* @author Shenyang
-
-* @Time 2016-02-27
-
+/*
+* 类    名： MyApplication
+* 描    述：包含一个公用方法
+* 作    者：沈阳
+* 时    间：2016-2-27
 */
 public class MyApplication extends Application {
-	/**
 
-	* 文章文本预处理
-
-	* @param essayName:assets文件夹中保存的文章名称
-
-	* @return 返回文章每个单词与等级的List集合，如果该单词不在生词列表中，等级为-1
-
-	* @author Shenyang
-	
-	* @throws IOException 
-
-	* @Time 2016-02-27
-
-	*/
-	public List<String> essayMap(String essayName) throws IOException
+    /*
+    * 方 法 名：getNewWords(String essayName)
+    * 功      能：获取essayName文章中出现的生词和等级
+    * 参      数：String essayName-文章名称
+    * 返 回 值：List<String>——essayName文章中出现的生词和等级
+    * 作      者：沈阳
+    * 时      间：2016-2-27
+    */
+	public List<String> getNewWords(String essayName) throws IOException
 	{
 		List<String> list=new ArrayList<String>();
 		Map<String, String> map=new HashMap<String, String>();
