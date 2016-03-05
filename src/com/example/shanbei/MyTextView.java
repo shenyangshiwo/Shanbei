@@ -6,6 +6,8 @@ import java.util.List;
 import android.R.integer;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -14,52 +16,65 @@ import android.util.Log;
 import android.view.View.MeasureSpec;
 import android.widget.TextView;
 /*
-* Àà    Ãû£ºMyTextView
-* Ãè    Êö£º°´×Ô¶¨ÒåÎÄ±¾ÏÔÊ¾TextView,ÊµÏÖÁËÁ½¶Ë¶ÔÆë¼°°´ÕÕÖ¸¶¨µÈ¼¶¸ßÁÁÏÔÊ¾Éú´Ê
-* ×÷    Õß£ºÉòÑô
-* Ê±    ¼ä£º2016-2-28
+* ç±»    åï¼šMyTextView
+* æ    è¿°ï¼šæŒ‰è‡ªå®šä¹‰æ–‡æœ¬æ˜¾ç¤ºTextView,å®ç°äº†ä¸¤ç«¯å¯¹é½åŠæŒ‰ç…§æŒ‡å®šç­‰çº§é«˜äº®æ˜¾ç¤ºç”Ÿè¯
+* ä½œ    è€…ï¼šæ²ˆé˜³
+* æ—¶    é—´ï¼š2016-2-28
 */
 public class MyTextView extends TextView {
-	public List<String> mWordList=null;//µ±Ç°ÎÄÕÂÖĞ°üº¬µÄÉú´Ê¼°µÈ¼¶
-	public float mTextSize;//×ÖÌå´óĞ¡
-	public int mTextColor;//×ÖÌåÑÕÉ«
-	public Paint mPaint;//»­±Ê
-	public String mTextContent="shen yang nanjing university";//ÏÔÊ¾ÄÚÈİ
-	public float mTextViewWidth;//¿Ø¼ş¿í¶È
-	public float mWordDistance=20;//µ¥´ÊÏÔÊ¾×îĞ¡¼ä¸ô
-	public float mLineSpace=10;//µ¥´ÊÏÔÊ¾ĞĞ¾à
-	public int mLineCount=0;//ÏÔÊ¾ĞĞÊı
-	public float mPadding=20;//ÏÔÊ¾±ß¾à
-	String[] mTextWords=null;//ÎÄÕÂÄÚÈİÓ¢ÎÄµ¥´ÊÊı×é
-	public int mLevel=-1;//ÒªÏÔÊ¾µÄÉú´Ê¼¶±ğ£¬-1´ú±í²»ÏÔÊ¾Éú´Ê
+	private List<String> mWordList=null;//å½“å‰æ–‡ç« ä¸­åŒ…å«çš„ç”Ÿè¯åŠç­‰çº§
+	private float mTextSize;//å­—ä½“å¤§å°
+	private int mTextColor;//å­—ä½“é¢œè‰²
+	private Paint mPaint;//ç”»ç¬”
+	private String mTextContent="shen yang nanjing university";//æ˜¾ç¤ºå†…å®¹
+	private float mTextViewWidth;//æ§ä»¶å®½åº¦
+	private float mWordDistance=20;//å•è¯æ˜¾ç¤ºæœ€å°é—´éš”
+	private float mLineSpace=10;//å•è¯æ˜¾ç¤ºè¡Œè·
+	private int mLineCount=0;//æ˜¾ç¤ºè¡Œæ•°
+	private float mPadding=20;//æ˜¾ç¤ºè¾¹è·
+	private String[] mTextWords=null;//æ–‡ç« å†…å®¹è‹±æ–‡å•è¯æ•°ç»„
+	private int mLevel=-1;//è¦æ˜¾ç¤ºçš„ç”Ÿè¯çº§åˆ«ï¼Œ-1ä»£è¡¨ä¸æ˜¾ç¤ºç”Ÿè¯
+	
+	public void setmWordList(List<String> mWordList) {
+		this.mWordList = mWordList;
+	}
+
+	public void setmTextContent(String mTextContent) {
+		this.mTextContent = mTextContent;
+	}
+
+	public void setmLevel(int mLevel) {
+		this.mLevel = mLevel;
+	}
+
 	/*
-	 * ·½ ·¨ Ãû£ºMyTextView(Context context, AttributeSet attrs) 
-	 * ¹¦      ÄÜ£ºÖØĞ´¸¸Àà¹¹Ôìº¯Êı£¬ÉèÖÃ»­Ë¢µÄ´óĞ¡ºÍÑÕÉ«
-	 * ²Î      Êı£º(Context context, AttributeSet attrs)
-	 * ·µ »Ø Öµ£ºÎŞ
-	 * ×÷      Õß£ºÉòÑô
-	 * Ê±      ¼ä£º2016-2-29
+	 * æ–¹ æ³• åï¼šMyTextView(Context context, AttributeSet attrs) 
+	 * åŠŸ      èƒ½ï¼šé‡å†™çˆ¶ç±»æ„é€ å‡½æ•°ï¼Œè®¾ç½®ç”»åˆ·çš„å¤§å°å’Œé¢œè‰²
+	 * å‚      æ•°ï¼š(Context context, AttributeSet attrs)
+	 * è¿” å› å€¼ï¼šæ— 
+	 * ä½œ      è€…ï¼šæ²ˆé˜³
+	 * æ—¶      é—´ï¼š2016-2-29
 	 */
 	public MyTextView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		// TODO Auto-generated constructor stub
 		
 		
-		//TypedArray a=context.obtainStyledAttributes(attrs,R.styleable.MyTextView);
+		
 		mTextColor=Color.rgb(0x00, 0x00, 0x00);  
 		mTextSize=40;
 		mPaint = new Paint();
 		mPaint.setTextSize(mTextSize);  
         mPaint.setColor(mTextColor);
-        //a.recycle(); 
+
 	}
-	/* @¸²¸Ç¸¸ÀàonMeasure(int widthMeasureSpec, int heightMeasureSpec)·½·¨
-	 * ·½ ·¨ Ãû£ºonMeasure(int widthMeasureSpec, int heightMeasureSpec)
-	 * ¹¦      ÄÜ£º¸²¸Ç¸¸ÀàonMeasure·½·¨£¬×Ô¶¨Òå¿Ø¼şµÄ´óĞ¡
-	 * ²Î      Êı£º(Context context, AttributeSet attrs)
-	 * ·µ »Ø Öµ£ºÎŞ
-	 * ×÷      Õß£ºÉòÑô
-	 * Ê±      ¼ä£º2016-2-29
+	/* @è¦†ç›–çˆ¶ç±»onMeasure(int widthMeasureSpec, int heightMeasureSpec)æ–¹æ³•
+	 * æ–¹ æ³• åï¼šonMeasure(int widthMeasureSpec, int heightMeasureSpec)
+	 * åŠŸ      èƒ½ï¼šè¦†ç›–çˆ¶ç±»onMeasureæ–¹æ³•ï¼Œè‡ªå®šä¹‰æ§ä»¶çš„å¤§å°
+	 * å‚      æ•°ï¼š(Context context, AttributeSet attrs)
+	 * è¿” å› å€¼ï¼šæ— 
+	 * ä½œ      è€…ï¼šæ²ˆé˜³
+	 * æ—¶      é—´ï¼š2016-2-29
 	 */
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -107,39 +122,40 @@ public class MyTextView extends TextView {
 			start=end;
 			
 		}
+		
 		setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec), (int) ((mLineCount+1)*(mTextSize+mLineSpace))+50);
 	    
 	}
-	/* @¸²¸Ç¸¸ÀàonDraw(Canvas canvas)·½·¨
-	 * ·½ ·¨ Ãû£ºonDraw(Canvas canvas)
-	 * ¹¦      ÄÜ£º¸²¸Ç¸¸ÀàonDraw(Canvas canvas)·½·¨£¬×Ô¶¨Òå¿Ø¼şÖĞÏÔÊ¾µÄÄÚÈİ
-	 * ²Î      Êı£ºCanvas canvas¡ª¡ª»­²¼
-	 * ·µ »Ø Öµ£ºÎŞ
-	 * ×÷      Õß£ºÉòÑô
-	 * Ê±      ¼ä£º2016-2-29
+	/* @è¦†ç›–çˆ¶ç±»onDraw(Canvas canvas)æ–¹æ³•
+	 * æ–¹ æ³• åï¼šonDraw(Canvas canvas)
+	 * åŠŸ      èƒ½ï¼šè¦†ç›–çˆ¶ç±»onDraw(Canvas canvas)æ–¹æ³•ï¼Œè‡ªå®šä¹‰æ§ä»¶ä¸­æ˜¾ç¤ºçš„å†…å®¹
+	 * å‚      æ•°ï¼šCanvas canvasâ€”â€”ç”»å¸ƒ
+	 * è¿” å› å€¼ï¼šæ— 
+	 * ä½œ      è€…ï¼šæ²ˆé˜³
+	 * æ—¶      é—´ï¼š2016-2-29
 	 */
 	@Override
 	protected void onDraw(Canvas canvas) {
 		// TODO Auto-generated method stub
 		//super.onDraw(canvas);
-		//mTextWords=mTextContent.split(" ");
+		
 		reDraw(canvas, mLevel);
 	
 	}
 	/* 
-	 * ·½ ·¨ Ãû£ºreDraw(Canvas canvas, int i)
-	 * ¹¦      ÄÜ£º×Ô¶¨Òå¿Ø¼şÖĞÏÔÊ¾µÄÄÚÈİ
-	 * ²Î      Êı£ºCanvas canvas¡ª¡ª»­²¼£¬int i¡ª¡ªÒªÏÔÊ¾µÄÉú´ÊµÈ¼¶
-	 * ·µ »Ø Öµ£ºÎŞ
-	 * ×÷      Õß£ºÉòÑô
-	 * Ê±      ¼ä£º2016-2-29
+	 * æ–¹ æ³• åï¼šreDraw(Canvas canvas, int i)
+	 * åŠŸ      èƒ½ï¼šè‡ªå®šä¹‰æ§ä»¶ä¸­æ˜¾ç¤ºçš„å†…å®¹
+	 * å‚      æ•°ï¼šCanvas canvasâ€”â€”ç”»å¸ƒï¼Œint iâ€”â€”è¦æ˜¾ç¤ºçš„ç”Ÿè¯ç­‰çº§
+	 * è¿” å› å€¼ï¼šæ— 
+	 * ä½œ      è€…ï¼šæ²ˆé˜³
+	 * æ—¶      é—´ï¼š2016-2-29
 	 */
 	public void reDraw(Canvas canvas, int i)
 	{
+		
 		int start=0;
 		int end=start;
 		mLineCount=0;
-		mPaint = new Paint();
 		mPaint.setTextSize(mTextSize);  
         mPaint.setColor(mTextColor);
 		while(start<(mTextWords.length))
@@ -223,6 +239,8 @@ public class MyTextView extends TextView {
 									float stopY=startY;
 									
 									canvas.drawLine(startX, startY, stopX, stopY, mPaint);
+									//---
+									
 								}
 								canvas.drawText(mTextWords[k], drawedWidth, (mLineCount+1)*(mTextSize+mLineSpace), mPaint);
 								drawedWidth=drawedWidth+avrAdditonWidth+mPaint.measureText(mTextWords[start]);
@@ -251,15 +269,18 @@ public class MyTextView extends TextView {
 			
 			
 		}
+		canvas.save();
+		canvas.restore();
+		
 		
 	}
 	/* 
-	 * ·½ ·¨ Ãû£ºchoosePaint(int k)
-	 * ¹¦      ÄÜ£ºÅĞ¶ÏmTextWords[k]ÊÇ·ñÊôÓÚÉú´Ê£¬ÊÇµÄ»°»­±ÊÉèÖÃºìÉ«·µ»Øtrue£¬²»ÊÇµÄ»°»­±ÊÉèÖÃºÚÉ«·µ»Øfalse
-	 * ²Î      Êı£ºint k¡ª¡ª´ú±ímTextWordsÊı×éµÚk¸ö×Ö·û´®
-	 * ·µ »Ø Öµ£ºboolean¡ª¡ªmTextWords[k]ÊÇ·ñÊôÓÚÉú´Ê
-	 * ×÷      Õß£ºÉòÑô
-	 * Ê±      ¼ä£º2016-2-29
+	 * æ–¹ æ³• åï¼šchoosePaint(int k)
+	 * åŠŸ      èƒ½ï¼šåˆ¤æ–­mTextWords[k]æ˜¯å¦å±äºç”Ÿè¯ï¼Œæ˜¯çš„è¯ç”»ç¬”è®¾ç½®çº¢è‰²è¿”å›trueï¼Œä¸æ˜¯çš„è¯ç”»ç¬”è®¾ç½®é»‘è‰²è¿”å›false
+	 * å‚      æ•°ï¼šint kâ€”â€”ä»£è¡¨mTextWordsæ•°ç»„ç¬¬kä¸ªå­—ç¬¦ä¸²
+	 * è¿” å› å€¼ï¼šbooleanâ€”â€”mTextWords[k]æ˜¯å¦å±äºç”Ÿè¯
+	 * ä½œ      è€…ï¼šæ²ˆé˜³
+	 * æ—¶      é—´ï¼š2016-2-29
 	 */
 	public boolean choosePaint(int k)
 	{
@@ -287,7 +308,7 @@ public class MyTextView extends TextView {
 		}
 		if(IsNewWord==true)
 		{
-			mPaint=new Paint();
+			
 			mTextColor=Color.RED;
 			mTextSize=40;
 			mPaint.setTextSize(mTextSize);  
@@ -297,7 +318,7 @@ public class MyTextView extends TextView {
 		else {
 			mTextColor=Color.BLACK;  
 			mTextSize=40;
-			mPaint = new Paint();
+			
 			mPaint.setTextSize(mTextSize);  
 	        mPaint.setColor(mTextColor);
 		}

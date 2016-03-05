@@ -34,6 +34,7 @@ public class EssayContentActivity extends Activity {
 	private SeekBar mSeekBar;//拖动该seekbar控件，选择显示生词的等级
 	private MyApplication mApp;
 	private String mTextContent;//要显示的文章内容
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -49,9 +50,9 @@ public class EssayContentActivity extends Activity {
 				{
 					mSeekBar.setProgress(mSeekBar.getMax());
 					mTextViewShowNewWords.setText("关闭显示");
-					mTextViewEssay.mLevel=6;
-					mTextViewEssay.setEnabled(false);
-					mTextViewEssay.setEnabled(true);
+					mTextViewEssay.setmLevel(6);
+					
+					mTextViewEssay.invalidate();
 					
 					
 					Toast.makeText(EssayContentActivity.this,"显示所有生词",Toast.LENGTH_SHORT).show();
@@ -61,9 +62,8 @@ public class EssayContentActivity extends Activity {
 				{
 					mSeekBar.setProgress(0);
 					mTextViewShowNewWords.setText("显示生词");
-					mTextViewEssay.mLevel=-1;
-					mTextViewEssay.setEnabled(false);
-					mTextViewEssay.setEnabled(true);
+					mTextViewEssay.setmLevel(-1);
+					mTextViewEssay.invalidate();
 					Toast.makeText(EssayContentActivity.this,"不显示生词",Toast.LENGTH_SHORT).show();
 					
 					
@@ -79,9 +79,8 @@ public class EssayContentActivity extends Activity {
 			public void onStopTrackingTouch(SeekBar seekBar) {
 				// TODO Auto-generated method stub
 				int level=seekBar.getProgress()-1;
-				mTextViewEssay.mLevel=level;
-				mTextViewEssay.setEnabled(false);
-				mTextViewEssay.setEnabled(true);
+				mTextViewEssay.setmLevel(level);
+				mTextViewEssay.invalidate();
 				if(level<0)
 				{
 					Toast.makeText(EssayContentActivity.this,"不显示生词",Toast.LENGTH_SHORT).show();
@@ -102,6 +101,15 @@ public class EssayContentActivity extends Activity {
 					boolean fromUser) {
 				// TODO Auto-generated method stub
 				
+				
+			}
+		});
+		//mTextViewEssay添加点击事件，实现点击单词高亮显示
+		mTextViewEssay.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
 				
 			}
 		});
@@ -171,14 +179,16 @@ public class EssayContentActivity extends Activity {
 		try {
 			//获取当前文章内容
 			mTextContent=formatString();
-			mTextViewEssay.mLevel=-1;
-			mTextViewEssay.mTextContent=mTextContent;
-			mTextViewEssay.mWordList=mWordList;
+			mTextViewEssay.setmLevel(-1);
+			mTextViewEssay.setmTextContent(mTextContent);
+			mTextViewEssay.setmWordList(mWordList);
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			
 		}
+		
 	}
 	
 
