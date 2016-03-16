@@ -14,7 +14,7 @@
         android:name="MyApplication"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".EssayListActivity"
+            android:name=".MainActivity"
             android:label="短文列表" >
             
         </activity>
@@ -29,7 +29,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".EssayContentActivity"
+            android:name=".EssayActivity"
             android:label="" >
             
         </activity>
